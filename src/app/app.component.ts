@@ -1,18 +1,9 @@
 import { Component } from '@angular/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { BookComponent } from './book/book.component';
+import { Book } from './interfaces/book.interface';
+import { books } from './books';
 
-interface Alert {
-  type: string;
-  message: string;
-}
-
-const ALERTS: Alert[] = [{
-    type: 'success',
-    message: 'This is an success alert',
-  }, {
-    type: 'info',
-    message: 'This is an info alert',
-  }
-];
 
 @Component({
   selector: 'app-root',
@@ -20,17 +11,32 @@ const ALERTS: Alert[] = [{
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  alerts: Alert[] | any;
-
-  constructor() {
-    this.reset();
+  constructor(private modalService: NgbModal) {
   }
 
-  close(alert: Alert) {
-    this.alerts.splice(this.alerts.indexOf(alert), 1);
+  closeResult = '';
+  books = books;
+
+  open() {
+    this.modalService.open(BookComponent).result.then((book) => {
+      this.books.push(book);
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
-  reset() {
-    this.alerts = Array.from(ALERTS);
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  isLastAuthor(index: number, authors: Array<string>): boolean{
+    if (authors.length-1 === index) return true;
+    return false;
   }
 }

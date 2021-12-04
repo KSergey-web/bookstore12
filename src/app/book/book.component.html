@@ -1,0 +1,23 @@
+<div class="form-inline">
+    <div class="form-group">
+        <div class="col-md-8">
+            <input class="form-control" [(ngModel)]="name" placeholder = "Название" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div *ngFor="let author of authors; let i = index">
+            <span (dblclick)='editAuthor(author, i)'>{{author}}</span> <span *ngIf='!isLastAuthor(i, authors)'>, </span>
+        </div>
+        <button class="btn btn-default" (click)="newAuthor()">Добавить автора</button>
+    </div>
+    <div class="form-group">
+        <div class="col-md-8">
+            <input class="form-control" [(ngModel)]="isbn" placeholder = "isbn" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button class="btn btn-default" (click)="saveBook()">Добавить</button>
+        </div>
+    </div>
+</div>
