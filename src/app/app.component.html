@@ -5,6 +5,7 @@
       Название книги: {{book.name}}<br/>
       Авторы: <span *ngFor="let author of book.authors; let i = index">{{author}}<span *ngIf='!isLastAuthor(i, book.authors)'>, </span> </span> <br/>
       <span *ngIf='book.rating'> Рейтинг: {{book.rating}} <br/> </span>
+      <ngb-rating *ngIf="hasProperty(book.rating)" [rate]="$any(book.rating)"  [readonly]="true"></ngb-rating>
       <span *ngIf='book.year'> Год публикации: {{book.year | date:'dd.MM.yyyy'}} <br/> </span>
       <span *ngIf='book.isbn'>ISBN: {{book.isbn}} <br/> </span>
       ____________________________________________

@@ -39,4 +39,9 @@ export class AppComponent {
     if (authors.length-1 === index) return true;
     return false;
   }
+
+  hasProperty(data: any): boolean{
+    if (data !== null || data !== undefined) return true;
+    return false;
+  }
 }

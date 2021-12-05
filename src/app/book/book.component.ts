@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Book } from '../interfaces/book.interface';
+import validator from 'validator';
 
 @Component({
   selector: 'app-book',
@@ -14,6 +15,12 @@ export class BookComponent implements OnInit {
   year?: Date;
   rating?: number;
   isbn?: string;
+
+  selected = 0;
+  hovered = 0;
+  readonly = false;
+
+  public isCollapsed = false;
   
   constructor(
     public activeModal: NgbActiveModal,
@@ -22,6 +29,7 @@ export class BookComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   saveBook() {
     alert(`${this.name}, ${this.authors}`)
     let book: Book = {
@@ -29,7 +37,7 @@ export class BookComponent implements OnInit {
       authors: this.authors,
     }
     if (this.year && this.year.getFullYear() > 1800) book.year = this.year;
-    if (this.isbn) book.isbn = this.isbn;
+    if (this.isbn && validator.isISBN(this.isbn)) book.isbn = this.isbn;
     if (this.rating) book.rating = this.rating;
     this.activeModal.close(book)
   }
@@ -49,6 +57,10 @@ export class BookComponent implements OnInit {
     let author = prompt('Введите имя автора: ', '');
     if (!(author && author.trim())) return;
     this.authors.push(author);
+  }
+
+  isISBN(isbn: string): boolean {
+    return validator.isISBN(isbn);
   }
 
   isLastAuthor(index: number, authors: Array<string>): boolean{
