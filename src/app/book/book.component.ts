@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Book } from '../interfaces/book.interface';
 import validator from 'validator';
 
@@ -20,14 +20,29 @@ export class BookComponent implements OnInit {
   hovered = 0;
   readonly = false;
 
-  public isCollapsed = false;
-  
+  isRatingCollapsed = true;
+  isISBNCollapsed = true;
+  isYearCollapsed = true;
+
+  selectedDate?: NgbDateStruct;
+  dateNow: NgbDateStruct;
+  minDate: NgbDateStruct = {
+    year: 1801,
+    day: 1,
+    month: 1
+  };
+
   constructor(
     public activeModal: NgbActiveModal,
-    ) { }
+    private calendar: NgbCalendar
+    ) { 
+      this.dateNow = this.calendar.getToday();
+    }
 
   ngOnInit(): void {
+    
   }
+  
 
 
   saveBook() {

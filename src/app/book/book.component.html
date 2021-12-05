@@ -15,28 +15,61 @@
             <button class="btn btn-default" (click)="newAuthor()">Добавить автора</button>
         </ul>
     </div>
-    <ngb-rating [(rate)]="selected" (hover)="hovered=$event" (leave)="hovered=0" [readonly]="readonly"></ngb-rating>
     
     <p>
-        <button type="button" class="btn btn-outline-primary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed"
+        <button type="button" class="btn btn-outline-primary" (click)="collapse_rating.toggle()" [attr.aria-expanded]="!isRatingCollapsed"
           aria-controls="collapseExample">
-          Toggle
+          Добавить Рейтинг
         </button>
       </p>
-      <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+      <div #collapse_rating="ngbCollapse" [(ngbCollapse)]="isRatingCollapsed">
         <div class="card">
           <div class="card-body">
-            Добавить Рейтинг
+            <ngb-rating [(rate)]="selected" (hover)="hovered=$event" (leave)="hovered=0" [readonly]="readonly"></ngb-rating>
           </div>
         </div>
       </div>
-    
-    <div class="form-group">
-        ISBN
-        <div class="col-md-8">
-            <input class="form-control" [(ngModel)]="isbn" placeholder="isbn" />
+
+      <p>
+        <button type="button" class="btn btn-outline-primary" (click)="collapse_isbn.toggle()" [attr.aria-expanded]="!isISBNCollapsed"
+          aria-controls="collapseExample">
+          Добавить ISBN
+        </button>
+      </p>
+      <div #collapse_isbn="ngbCollapse" [(ngbCollapse)]="isISBNCollapsed">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group">
+                ISBN
+                <div class="col-md-8">
+                    <input class="form-control" [(ngModel)]="isbn" placeholder="isbn" />
+                </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+
+      <p>
+        <button type="button" class="btn btn-outline-primary" (click)="collapse_year.toggle()" [attr.aria-expanded]="!isYearCollapsed"
+          aria-controls="collapseExample">
+          Добавить дату публикации
+        </button>
+      </p>
+      <div #collapse_year="ngbCollapse" [(ngbCollapse)]="isYearCollapsed">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group">
+                Дата
+                <ngb-datepicker #dp [(ngModel)]="selectedDate" [maxDate]='dateNow' [minDate]='minDate'></ngb-datepicker>
+                <pre>Model: {{ dateNow | json }}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    
+    
     <div class="form-group">
         <div class="col-md-offset-2 col-md-8">
             <button class="btn btn-default" (click)="saveBook()">Добавить</button>
