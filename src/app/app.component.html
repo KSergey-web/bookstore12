@@ -1,4 +1,5 @@
 
 <button class="btn btn-lg btn-outline-primary" (click)="open()">Добавить книгу</button>
+<app-recommended-books [books]='books'></app-recommended-books>
 <app-list-books [books]='books'></app-list-books>
 <router-outlet></router-outlet>

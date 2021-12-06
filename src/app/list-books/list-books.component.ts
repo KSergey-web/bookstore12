@@ -17,6 +17,11 @@ export class ListBooksComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.updateBooks();
+  }
+
+
+  updateBooks(){
     this.groupingBooks = Object.entries(this.groupBy(this.books, 'year'));
     this.groupingBooks.sort((group1, group2) => +group2[0] - +group1[0]);
     this.groupingBooks.forEach(group => {

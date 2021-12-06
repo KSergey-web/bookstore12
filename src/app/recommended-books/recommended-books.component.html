@@ -1,0 +1,15 @@
+<h1>Лучшие книги</h1>
+<ul>
+    <li *ngFor="let book of goodBooks">
+        Название книги: {{book.name}}<br />
+        Авторы: <span *ngFor="let author of book.authors; let i = index">{{author}}<span
+                *ngIf='!isLastAuthor(i, book.authors)'>, </span> </span> <br />
+        <span *ngIf='book.rating'> Рейтинг: {{book.rating}} <br /> </span>
+        <div *ngIf="book.rating">
+            <ngb-rating [rate]="$any(book.rating)" [readonly]="true"></ngb-rating>
+        </div>
+        <span *ngIf='book.year'> Год публикации: {{book.year}} <br /> </span>
+        <span *ngIf='book.isbn'>ISBN: {{book.isbn}} <br /> </span>
+        ____________________________________________
+    </li>
+</ul>
