@@ -34,14 +34,4 @@ export class AppComponent {
       return `with: ${reason}`;
     }
   }
-
-  isLastAuthor(index: number, authors: Array<string>): boolean{
-    if (authors.length-1 === index) return true;
-    return false;
-  }
-
-  hasProperty(data: any): boolean{
-    if (data !== null && data !== undefined) return true;
-    return false;
-  }
 }

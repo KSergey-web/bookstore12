@@ -6,14 +6,6 @@ import { NgForm} from '@angular/forms';
 import { BookOptionalPropertiesComponent } from '../book-optional-properties/book-optional-properties.component';
 
 
-const groupBy = (arr: any, fn: any) =>
-  arr
-    .map(typeof fn === 'function' ? fn : (val: any) => val[fn])
-    .reduce((acc: any, val: any, i: any) => {
-      acc[val] = (acc[val] || []).concat(arr[i]);
-      return acc;
-    }, {});
-
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
