@@ -1,5 +1,5 @@
 import { Book } from "./interfaces/book.interface";
-let date: Date = new Date()
+let date: number = 5;
 export const books: Array<Book> = [{
     name: 'The Clean Coder: A Code of Conduct for Professional Programmers',
     authors: ["Martin", "Robert"],

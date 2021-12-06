@@ -1,78 +1,46 @@
-<div>
-    <div class="form-group">
-        Название книги
-        <div class="col-md-8">
-            <input class="form-control" [(ngModel)]="name" placeholder="Название" />
-        </div>
+<form #bookForm="ngForm" novalidate>
+  <div class="form-group">
+    Название книги
+    <div class="col-md-8">
+      <input class="form-control" name="bookName" placeholder="Название" ngModel required />
     </div>
-    <div class="form-group">
-        Авторы:
-        <ul>
-            <li *ngFor="let author of authors; let i = index">
-                <span (dblclick)='editAuthor(author, i)'>{{author}}</span> <span *ngIf='!isLastAuthor(i, authors)'>,
-                </span>
-            </li>
-            <button class="btn btn-default" (click)="newAuthor()">Добавить автора</button>
-        </ul>
+  </div>
+  <div class="form-group">
+    Авторы:
+    <ul>
+      <li *ngFor="let author of authors; let i = index">
+        <span (dblclick)='editAuthor(author, i)'>{{author}}</span> <span *ngIf='!isLastAuthor(i)'>,
+        </span>
+      </li>
+    </ul>
+    <div #authors_temp [hidden]="authors.length != 0" class="alert alert-danger">
+      Укажите хотя бы одного автора
     </div>
-    
-    <p>
-        <button type="button" class="btn btn-outline-primary" (click)="collapse_rating.toggle()" [attr.aria-expanded]="!isRatingCollapsed"
-          aria-controls="collapseExample">
-          Добавить Рейтинг
-        </button>
-      </p>
-      <div #collapse_rating="ngbCollapse" [(ngbCollapse)]="isRatingCollapsed">
-        <div class="card">
-          <div class="card-body">
-            <ngb-rating [(rate)]="selected" (hover)="hovered=$event" (leave)="hovered=0" [readonly]="readonly"></ngb-rating>
+  </div>
+
+  <p>
+    <button type="button" class="btn btn-outline-primary" (click)="collapse_author.toggle()"
+      [attr.aria-expanded]="!isAuthorCollapsed" aria-controls="collapseExample">
+      Добавить автора
+    </button>
+  </p>
+  <div #collapse_author="ngbCollapse" [(ngbCollapse)]="isAuthorCollapsed">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          Автор:
+          <div class="col-md-8">
+            <input class="form-control" [(ngModel)]="author" placeholder="Автор" [ngModelOptions]="{standalone: true}" required />
           </div>
+          <button class="btn btn-secondary" (click)="addAuthor()">Добавить</button>
         </div>
       </div>
-
-      <p>
-        <button type="button" class="btn btn-outline-primary" (click)="collapse_isbn.toggle()" [attr.aria-expanded]="!isISBNCollapsed"
-          aria-controls="collapseExample">
-          Добавить ISBN
-        </button>
-      </p>
-      <div #collapse_isbn="ngbCollapse" [(ngbCollapse)]="isISBNCollapsed">
-        <div class="card">
-          <div class="card-body">
-            <div class="form-group">
-                ISBN
-                <div class="col-md-8">
-                    <input class="form-control" [(ngModel)]="isbn" placeholder="isbn" />
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <p>
-        <button type="button" class="btn btn-outline-primary" (click)="collapse_year.toggle()" [attr.aria-expanded]="!isYearCollapsed"
-          aria-controls="collapseExample">
-          Добавить дату публикации
-        </button>
-      </p>
-      <div #collapse_year="ngbCollapse" [(ngbCollapse)]="isYearCollapsed">
-        <div class="card">
-          <div class="card-body">
-            <div class="form-group">
-                Дата
-                <ngb-datepicker #dp [(ngModel)]="selectedDate" [maxDate]='dateNow' [minDate]='minDate'></ngb-datepicker>
-                <pre>Model: {{ dateNow | json }}</pre>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      
-    
-    
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-8">
-            <button class="btn btn-default" (click)="saveBook()">Добавить</button>
-        </div>
     </div>
-</div>
+  </div>
+  <app-book-optional-properties #book_opt_comp_tepm></app-book-optional-properties>
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-8">
+      <button [disabled]="bookForm.invalid || !authors_temp.hidden || !book_opt_comp_tepm.isFormValid()" class="btn btn-primary" type="submit" (click)="saveBook(bookForm)">Сохранить книгу</button>
+    </div>
+  </div>
+</form>

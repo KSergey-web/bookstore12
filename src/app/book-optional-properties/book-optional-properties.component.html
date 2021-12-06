@@ -1,0 +1,49 @@
+<form #book_opt_form_tepm="ngForm" novalidate>
+    <p>
+        <button type="button" class="btn btn-outline-primary" (click)="collapse_year.toggle()"
+            [attr.aria-expanded]="!isYearCollapsed" aria-controls="collapseExample">
+            Добавить год публикации
+        </button>
+    </p>
+    <div #collapse_year="ngbCollapse" [(ngbCollapse)]="isYearCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    Год публикации
+                    <input type="number" ngModel name="year" min="1801" [max]="currentYear" #year="ngModel" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+        <button type="button" class="btn btn-outline-primary" (click)="collapse_rating.toggle()"
+            [attr.aria-expanded]="!isRatingCollapsed" aria-controls="collapseExample">
+            Добавить Рейтинг
+        </button>
+    </p>
+    <div #collapse_rating="ngbCollapse" [(ngbCollapse)]="isRatingCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <ngb-rating [(rate)]="selectedRating" (hover)="hovered=$event" (leave)="hovered=0"
+                    [readonly]="false">
+                </ngb-rating>
+            </div>
+        </div>
+    </div>
+    <p>
+        <button type="button" class="btn btn-outline-primary" (click)="collapse_isbn.toggle()"
+            [attr.aria-expanded]="!isISBNCollapsed" aria-controls="collapseExample">
+            Добавить ISBN
+        </button>
+    </p>
+    <div #collapse_isbn="ngbCollapse" [(ngbCollapse)]="isISBNCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    ISBN
+                        <input class="form-control" ngModel name="isbn" placeholder="ISBN" required #isbn="ngModel"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

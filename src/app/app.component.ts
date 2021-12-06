@@ -41,7 +41,7 @@ export class AppComponent {
   }
 
   hasProperty(data: any): boolean{
-    if (data !== null || data !== undefined) return true;
+    if (data !== null && data !== undefined) return true;
     return false;
   }
 }

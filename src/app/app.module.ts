@@ -6,11 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BookComponent } from './book/book.component';
+import { BookOptionalPropertiesComponent } from './book-optional-properties/book-optional-properties.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BookComponent
+    BookComponent,
+    BookOptionalPropertiesComponent
   ],
   imports: [
     BrowserModule,
