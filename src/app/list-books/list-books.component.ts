@@ -11,23 +11,32 @@ import { bookPropertiesEnum } from './book.enum';
 export class ListBooksComponent implements OnInit {
 
 
-  constructor(private bookService: BookService) { 
+  constructor(private bookService: BookService) {
   }
 
   groupingBooks!: [string, [Book]][];
-
+  groupMode: string = 'year';
+  books: Book[] = [];
 
   ngOnInit(): void {
     this.bookService.booksObservable.subscribe(books => {
+      this.books = books;
       this.updateGoodBook(books);
-      this.updateBooks(books);
+      this.updateBooks(this.groupMode);
     })
   }
 
+  
+  fnForGroupingByAuthors(book: Book) {
+    return book.authors.sort((a1: string, a2: string) => a1.localeCompare(a2))
+  }
 
-  updateBooks(books: Book[]){
-    this.groupingBooks = Object.entries(this.groupBy(books, 'year'));
-    this.groupingBooks.sort((group1, group2) => +group2[0] - +group1[0]);
+  updateBooks(groupMode: string = 'year') {
+    if (groupMode === bookPropertiesEnum.authors) 
+      this.groupingBooks = Object.entries(this.groupBy(this.books, this.fnForGroupingByAuthors));
+    else 
+      this.groupingBooks = Object.entries(this.groupBy(this.books, groupMode));
+    this.groupingBooks.sort(([g1], [g2]) => !isNaN( +g2 ) ? (+g2 - +g1) : g1.localeCompare(g2));
     this.groupingBooks.forEach(group => {
       group[1].sort(({ name: str1 }, { name: str2 }) => str1.localeCompare(str2))
     })
@@ -67,12 +76,31 @@ export class ListBooksComponent implements OnInit {
   }
 
   async deleteBook(book: Book): Promise<void> {
-    try{
-    this.bookService.deleteBook(book);
+    try {
+      this.bookService.deleteBook(book);
     }
     catch (err) {
       alert('Не удалось удалить книгу');
       console.error(err);
     }
   }
+
+  mode: string = 'year';
+
+  changeGroping(newMode: string): void {
+    if (newMode == this.groupMode) return;
+    this.groupMode = newMode
+    switch (this.groupMode) {
+      case bookPropertiesEnum.year:
+        this.updateBooks(bookPropertiesEnum.year);
+        break;
+      case bookPropertiesEnum.rating:
+        this.updateBooks(bookPropertiesEnum.rating);
+        break;
+      case bookPropertiesEnum.authors:
+        this.updateBooks(bookPropertiesEnum.authors);
+        break;
+    }
+  }
+
 }
