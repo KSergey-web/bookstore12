@@ -3,7 +3,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { BookComponent } from './book/book.component';
 import { Book } from './interfaces/book.interface';
 import { books } from './books';
-import { BookService } from './service/book.service';
+import { BookService } from './services/book.service';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class AppComponent {
   }
 
   closeResult = '';
-  books = books;
+  books: Book[] = [];
 
   open() {
     this.modalService.open(BookComponent).result.then((book) => {

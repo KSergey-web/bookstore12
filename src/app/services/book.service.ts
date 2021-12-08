@@ -11,23 +11,29 @@ import { Book } from '../interfaces/book.interface';
 })
 export class BookService {
 
-  
   get nameCollection(): string { 
     return 'Books';
   }
 
-  constructor(private firestore: AngularFirestore) {
+  private _bookObs: Observable<Book[]>
 
+  constructor(private firestore: AngularFirestore) {
+    this._bookObs = this.booksObs();
   }
 
-  getBooks(): Observable<Book[]> {
+  private booksObs(): Observable<Book[]> {
     return this.firestore.collection(this.nameCollection).valueChanges({ idField: 'id' }) as Observable<Book[]>;
   }
 
-  async createBook(book: Book): Promise<Book> {
-    const refBook = await this.firestore.collection<Book>(this.nameCollection).add(book);
-    const res: Book | undefined = (await refBook.get()).data();
-    if (!res) throw new Error('Сохраненный объект = undefined');
-    return res;
+  async createBook(book: Book): Promise<DocumentReference<Book>> {
+    return await this.firestore.collection<Book>(this.nameCollection).add(book);
+  }
+
+  async deleteBook(book: Book): Promise<void> {
+    return await this.firestore.collection(this.nameCollection).doc(book.id!).delete();
+  }
+
+  get booksObservable(): Observable<Book[]> {
+    return this._bookObs;
   }
 }

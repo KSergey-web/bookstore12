@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container pt-2">
   <form #bookForm="ngForm" novalidate>
     <div class="form-group">
       Название книги
@@ -27,20 +27,22 @@
     <div #collapse_author="ngbCollapse" [(ngbCollapse)]="isAuthorCollapsed">
       <div class="card">
         <div class="card-body">
-          <div class="form-group">
-            Автор:
-            <div class="col-md-8">
-              <input class="form-control" [(ngModel)]="author" placeholder="Автор" [ngModelOptions]="{standalone: true}"
+          <div class="form-group ">
+            
+              <label class="mb-1">Автор:</label>
+              <div class="row">
+              <input class="form-control col-sm" [(ngModel)]="author" placeholder="Автор" [ngModelOptions]="{standalone: true}"
                 required />
+                <button class="ml-1 btn btn-secondary col-2sm" (click)="addAuthor()">Добавить</button>
             </div>
-            <button class="btn btn-secondary" (click)="addAuthor()">Добавить</button>
+            
           </div>
         </div>
       </div>
     </div>
     <app-book-optional-properties #book_opt_comp_tepm></app-book-optional-properties>
     <div class="form-group">
-      <div class="col-md-offset-2 col-md-8">
+      <div class="col text-center">
         <button [disabled]="bookForm.invalid || !authors_temp.hidden || !book_opt_comp_tepm.isFormValid()"
           class="btn btn-primary" type="submit" (click)="saveBook(bookForm)">Сохранить книгу</button>
       </div>

@@ -1,18 +1,45 @@
-<div *ngFor="let groupBook of groupingBooks">
-    <h1 *ngIf="groupBook[0] !== 'undefined';else noyear_temp"> {{groupBook[0]}} </h1>
-    <ng-template #noyear_temp>  
-        <h1>Без даты публикации</h1>  
-      </ng-template> 
-    <ul>
-        <li *ngFor="let book of groupBook[1]">
-            Название книги: {{book.name}}<br />
-            Авторы: <span *ngFor="let author of book.authors; let i = index">{{author}}<span
-                    *ngIf='!isLastAuthor(i, book.authors)'>, </span> </span> <br />
-            <span *ngIf='book.rating'> Рейтинг: {{book.rating}} <br /> </span>
-            <div *ngIf="book.rating"><ngb-rating  [rate]="$any(book.rating)" [readonly]="true"></ngb-rating></div>
-            <span *ngIf='book.year'> Год публикации: {{book.year}} <br /> </span>
-            <span *ngIf='book.isbn'>ISBN: {{book.isbn}} <br /> </span>
-            ____________________________________________
-        </li>
-    </ul>
+<div class="pl-3 p-3">
+    <div *ngIf='goodBook'>
+        <h1>Лучшая книга</h1>
+        <div class="book  row">
+            <div class='col-sm'>
+                Название книги: {{goodBook.name}}<br />
+                Авторы: <span *ngFor="let author of goodBook.authors; let i = index">{{author}}<span
+                        *ngIf='!isLastAuthor(i, goodBook.authors)'>, </span> </span> <br />
+                <span *ngIf='goodBook.rating'> Рейтинг: {{goodBook.rating}} <br /> </span>
+                <div *ngIf="goodBook.rating">
+                    <ngb-rating [rate]="$any(goodBook.rating)" [readonly]="true"></ngb-rating>
+                </div>
+                <span *ngIf='goodBook.year'> Год публикации: {{goodBook.year}} <br /> </span>
+                <span *ngIf='goodBook.isbn'>ISBN: {{goodBook.isbn}} <br /> </span>
+            </div>
+            <div class="text-right col-sm">
+                <button type="button" class="btn btn-primary" (click)='deleteBook(goodBook)'>Удалить</button>
+            </div>
+        </div>
+    </div>
+    <div *ngFor="let groupBook of groupingBooks" class="mt-5">
+        <h1 *ngIf="groupBook[0] !== 'undefined';else noyear_temp"> {{groupBook[0]}} </h1>
+        <ng-template #noyear_temp>
+            <h1>Без даты публикации</h1>
+        </ng-template>
+        <ul>
+            <li *ngFor="let book of groupBook[1]" class="book row mt-4">
+                <div class="col-sm">
+                    Название книги: {{book.name}}<br />
+                    Авторы: <span *ngFor="let author of book.authors; let i = index">{{author}}<span
+                            *ngIf='!isLastAuthor(i, book.authors)'>, </span> </span> <br />
+                    <span *ngIf='book.rating'> Рейтинг: {{book.rating}} <br /> </span>
+                    <div *ngIf="book.rating">
+                        <ngb-rating [rate]="$any(book.rating)" [readonly]="true"></ngb-rating>
+                    </div>
+                    <span *ngIf='book.year'> Год публикации: {{book.year}} <br /> </span>
+                    <span *ngIf='book.isbn'>ISBN: {{book.isbn}} <br /> </span>
+                </div>
+                <div class="text-right col-sm">
+                    <button type="button" class="btn btn-primary" (click)='deleteBook(book)'>Удалить</button>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>

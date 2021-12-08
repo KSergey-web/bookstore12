@@ -2,3 +2,9 @@
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+body{
+    background-image: url("./assets/libraries.png");
+    background-attachment:fixed;
+    background-size: cover;
+}

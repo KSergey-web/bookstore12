@@ -4,7 +4,7 @@ import { Book } from '../interfaces/book.interface';
 import validator from 'validator';
 import { NgForm} from '@angular/forms';
 import { BookOptionalPropertiesComponent } from '../book-optional-properties/book-optional-properties.component';
-import { BookService } from '../service/book.service';
+import { BookService } from '../services/book.service';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class BookComponent implements OnInit {
     };
     try{
       let res = await this.bookService.createBook(book);
-      this.activeModal.close(res);
+      this.activeModal.close('Success');
     }
     catch (err) {
       console.error(err);
