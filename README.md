@@ -25,3 +25,25 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDTAZRjRx1kgvMn5FPCkXU5i0ChbSj5E3E",
+  authDomain: "bookstore-int.firebaseapp.com",
+  projectId: "bookstore-int",
+  storageBucket: "bookstore-int.appspot.com",
+  messagingSenderId: "317112045149",
+  appId: "1:317112045149:web:4d72f7e818f2963c26c7b4",
+  measurementId: "${config.measurementId}"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);

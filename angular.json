@@ -103,6 +103,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "bookstore12:build:production",
+            "firebaseProject": "bookstore-int",
+            "firebaseHostingSite": "bookstore-int"
+          }
         }
       }
     }

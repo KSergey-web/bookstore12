@@ -3,6 +3,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { BookComponent } from './book/book.component';
 import { Book } from './interfaces/book.interface';
 import { books } from './books';
+import { BookService } from './service/book.service';
 
 
 @Component({
@@ -11,7 +12,10 @@ import { books } from './books';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private modalService: NgbModal) {
+  constructor(
+    private modalService: NgbModal,
+    private bookService: BookService,
+    ) {
   }
 
   closeResult = '';

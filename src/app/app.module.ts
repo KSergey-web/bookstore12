@@ -9,6 +9,11 @@ import { BookComponent } from './book/book.component';
 import { BookOptionalPropertiesComponent } from './book-optional-properties/book-optional-properties.component';
 import { ListBooksComponent } from './list-books/list-books.component';
 import { RecommendedBooksComponent } from './recommended-books/recommended-books.component';
+import { environment } from 'src/environments/environment';
+import { BookService } from './service/book.service';
+import { AngularFireModule } from '@angular/fire/compat';
+
+
 
 @NgModule({
   declarations: [
@@ -22,9 +27,10 @@ import { RecommendedBooksComponent } from './recommended-books/recommended-books
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebase)
   ],
-  providers: [],
+  providers: [BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
