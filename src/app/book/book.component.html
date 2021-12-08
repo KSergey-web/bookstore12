@@ -9,8 +9,7 @@
     Авторы:
     <ul>
       <li *ngFor="let author of authors; let i = index">
-        <span (dblclick)='editAuthor(author, i)'>{{author}}</span> <span *ngIf='!isLastAuthor(i)'>,
-        </span>
+        <span (dblclick)='editAuthor(author, i)'>{{author}}</span>
       </li>
     </ul>
     <div #authors_temp [hidden]="authors.length != 0" class="alert alert-danger">

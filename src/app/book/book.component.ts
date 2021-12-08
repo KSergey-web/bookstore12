@@ -23,7 +23,7 @@ export class BookComponent implements OnInit {
 
   isAuthorCollapsed = true;
 
-
+  
   constructor(
     public activeModal: NgbActiveModal,
     ) { 
@@ -34,34 +34,37 @@ export class BookComponent implements OnInit {
   
 
 
-  saveBook(myForm: NgForm) {
+  saveBook(myForm: NgForm): void {
     this.bookOptionalPropertiesComponent?.getBookOptionalProperties();
-    let book: Book = {
-      name: myForm.controls.bookName.value,
+    const bookName = this.clearSpaces((myForm.controls.bookName.value as string));
+    const book: Book = {
+      name: bookName,
       authors: this.authors,
       ...this.bookOptionalPropertiesComponent?.getBookOptionalProperties()
     }
     this.activeModal.close(book)
   }
 
-  editAuthor(author: string, ind: number){
+  editAuthor(author: string, ind: number): void {
     let result = prompt('Автор: ', author);
     if ( result === null) return;
-    author = result;
-    if (!(author && author.trim())) {
+    author = this.clearSpaces(result);
+    if (!author) {
       this.authors.splice(ind,1);
       return;
     }
     this.authors[ind] = author;
   }
 
-  addAuthor(){
-    if (!(this.author && this.author.trim())) return;
-    this.authors.push(this.author);
+  addAuthor(): void {
+    let author = this.clearSpaces(this.author ?? '')
+    if (!author) return;
+    this.authors.push(author);
   }
 
-  isLastAuthor(index: number): boolean{
-    if (this.authors.length-1 === index) return true;
-    return false;
+  clearSpaces(str: string): string {
+    str = str.trim();
+    str = str.replace(/ +/g, ' ');
+    return str;
   }
 }
