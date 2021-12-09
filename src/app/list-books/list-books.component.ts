@@ -19,6 +19,8 @@ export class ListBooksComponent implements OnInit {
   groupedBooks!: [string, [Book]][];
   groupMode: string = 'year';
   books: Book[] = [];
+  
+  private today = new Date().getFullYear();
 
   ngOnInit(): void {
     this.bookService.booksObservable.subscribe((books) => {
@@ -53,11 +55,11 @@ export class ListBooksComponent implements OnInit {
 
   updateGoodBook(books: Book[]): void {
     this.goodBook = null;
-    const today = new Date().getFullYear();
-    books = books.filter(({ year }) => (year ? today - year >= 3 : false));
-    books = books.filter(({ rating }) =>
-      typeof rating === 'number' ? true : false
-    );
+    books = books.filter(({ year, rating }) => {
+      const old3year: boolean = (year ? this.today - year >= 3 : false)
+      const hasRating: boolean = (typeof rating === 'number' ? true : false)
+      return old3year && hasRating;
+    });
     if (books.length === 0) return;
     books.sort(({ rating: r1 }, { rating: r2 }) => r2! - r1!);
     const highestRating = books[0].rating!;
@@ -90,7 +92,7 @@ export class ListBooksComponent implements OnInit {
 
   mode: string = 'year';
 
-  changeGroping(newMode: string): void {
+  changeGrouping(newMode: string): void {
     if (newMode == this.groupMode) return;
     this.groupMode = newMode;
     switch (this.groupMode) {

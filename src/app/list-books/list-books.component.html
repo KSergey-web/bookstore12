@@ -12,7 +12,7 @@
                 <span *ngIf='goodBook.year'> Год публикации: {{goodBook.year}} <br /> </span>
                 <span *ngIf='goodBook.isbn'>ISBN: {{goodBook.isbn}} <br /> </span>
             </div>
-            <div class="text-right col-sm">
+            <div class="text-right col-2sm">
                 <button type="button" class="btn btn-primary" (click)='deleteBook(goodBook)'>Удалить</button>
             </div>
         </div>
@@ -21,13 +21,13 @@
         <h2>Группировать</h2>
     <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="mode">
         <label ngbButtonLabel class="btn-primary mr-1">
-            <input ngbButton type="radio" value='year' (click)="changeGroping('year')"> По дате
+            <input ngbButton type="radio" value='year' (click)="changeGrouping('year')"> По дате
         </label>
         <label ngbButtonLabel class="btn-primary mr-1">
-            <input ngbButton type="radio" value='rating' (click)="changeGroping('rating')"> По рейтингу
+            <input ngbButton type="radio" value='rating' (click)="changeGrouping('rating')"> По рейтингу
         </label>
         <label ngbButtonLabel class="btn-primary mr-1">
-            <input ngbButton type="radio" value='authors' (click)="changeGroping('authors')"> По авторам
+            <input ngbButton type="radio" value='authors' (click)="changeGrouping('authors')"> По авторам
         </label>
     </div>
 </div>
@@ -59,7 +59,7 @@
                     <span *ngIf='book.year'> Год публикации: {{book.year}} <br /> </span>
                     <span *ngIf='book.isbn'>ISBN: {{book.isbn}} <br /> </span>
                 </div>
-                <div class="text-right col-sm">
+                <div class="text-right col-2sm">
                     <button type="button" class="btn btn-primary" (click)='deleteBook(book)'>Удалить</button>
                 </div>
             </li>
