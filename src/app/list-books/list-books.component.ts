@@ -54,7 +54,6 @@ export class ListBooksComponent implements OnInit {
   updateGoodBook(books: Book[]): void {
     this.goodBook = null;
     const today = new Date().getFullYear();
-    debugger;
     books = books.filter(({ year }) => (year ? today - year >= 3 : false));
     books = books.filter(({ rating }) =>
       typeof rating === 'number' ? true : false
@@ -71,7 +70,7 @@ export class ListBooksComponent implements OnInit {
     this.goodBook = books[randomNumber];
   }
 
-  groupBy(arr: any, fn: any): {[s:string]: [any] } {
+  groupBy(arr: any, fn: any): { [s: string]: [any] } {
     return arr
       .map(typeof fn === 'function' ? fn : (val: any) => val[fn])
       .reduce((acc: any, val: any, i: any) => {

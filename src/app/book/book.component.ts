@@ -22,6 +22,10 @@ export class BookComponent implements OnInit {
 
   author?: string;
 
+  editingAuthor: string = '';
+
+  editingAuthorInd: number = -1;
+
   @Input() authors: Array<string> = [];
 
   @Input() initBook: Book = {
@@ -38,11 +42,35 @@ export class BookComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.initBook.id) {
-      this.authors = this.initBook.authors;
+      this.authors = this.initBook.authors.slice();
     }
     setTimeout(() => {
       this.bookForm.controls.bookName.setValue(this.initBook.name);
     }, 0);
+  }
+
+  dismissEditedAuthor() {
+    this.editingAuthorInd = -1;
+  }
+
+  editAuthor(author: string, ind: number): void {
+    this.editingAuthor = author;
+    this.editingAuthorInd = ind;
+  }
+
+  deleteAuthor(ind: number): void {
+    this.authors.splice(ind, 1);
+  }
+
+  saveAuthor(ind: number): void {
+    let author = this.editingAuthor;
+    author = this.clearSpaces(author);
+    this.editingAuthorInd = -1;
+    if (!author) {
+      this.deleteAuthor(ind);
+      return;
+    }
+    this.authors[ind] = author;
   }
 
   getFinishedBook(bookForm: NgForm): Book {
@@ -71,21 +99,12 @@ export class BookComponent implements OnInit {
     }
   }
 
-  editAuthor(author: string, ind: number): void {
-    let result = prompt('Автор: ', author);
-    if (result === null) return;
-    author = this.clearSpaces(result);
-    if (!author) {
-      this.authors.splice(ind, 1);
-      return;
-    }
-    this.authors[ind] = author;
-  }
-
   addAuthor(): void {
     let author = this.clearSpaces(this.author ?? '');
     if (!author) return;
     this.authors.push(author);
+    this.author = '';
+    this.isAuthorCollapsed = true;
   }
 
   clearSpaces(str: string): string {

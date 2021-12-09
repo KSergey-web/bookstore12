@@ -1,2 +1,16 @@
-input.ng-touched.ng-invalid {border:solid red 2px;}
-input.ng-touched.ng-valid {border:solid green 2px;}
+input.ng-touched.ng-invalid {border:solid red 3px;}
+input.ng-touched.ng-valid {border:solid green 3px;}
+
+.author:hover {
+    background-color: #01d5ff;
+}
+
+.author {
+  background-color: #e6e6e6;
+  user-select: none;
+}
+
+
+li {
+  list-style-type: none; 
+}

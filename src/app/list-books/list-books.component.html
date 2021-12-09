@@ -1,6 +1,6 @@
 <div class="pl-3 p-3">
     <div *ngIf='goodBook'>
-        <h1>Лучшая книга</h1>
+        <h2>Лучшая книга</h2>
         <div class="book  row" (dblclick)="editBook(goodBook)">
             <div class='col-sm'>
                 Название книги: {{goodBook.name}}<br />
@@ -33,23 +33,23 @@
 </div>
     <div *ngFor="let entryGroupBooks of groupedBooks" class="mt-5">
         <div *ngIf="groupMode === 'year'">
-            <h1 *ngIf="entryGroupBooks[0] !== 'undefined';else noyear_temp">Год публикации: {{entryGroupBooks[0]}} </h1>
+            <h2 *ngIf="entryGroupBooks[0] !== 'undefined';else noyear_temp">Год публикации: {{entryGroupBooks[0]}} </h2>
             <ng-template #noyear_temp>
-                <h1>Без даты публикации</h1>
+                <h2>Без даты публикации</h2>
             </ng-template>
         </div>
         <div *ngIf="groupMode === 'rating'">
-            <h1 *ngIf="entryGroupBooks[0] !== 'undefined';else norating_temp"> Оценка: {{entryGroupBooks[0]}} </h1>
+            <h2 *ngIf="entryGroupBooks[0] !== 'undefined';else norating_temp"> Оценка: {{entryGroupBooks[0]}} </h2>
             <ng-template #norating_temp>
-                <h1>Без рейтинга</h1>
+                <h2>Без рейтинга</h2>
             </ng-template>
         </div>
         <div *ngIf="groupMode === 'authors'">
-            <h1 >Авторы: {{entryGroupBooks[0].split(',').join(', ')}} </h1>
+            <h2 >Авторы: {{entryGroupBooks[0].split(',').join(', ')}} </h2>
         </div>
-        <ul>
-            <li *ngFor="let book of entryGroupBooks[1]" class="book row mt-4" (dblclick)="editBook(book)">
-                <div class="col-sm">
+        <ul class="pl-0">
+            <li *ngFor="let book of entryGroupBooks[1]" class="book row mt-4">
+                <div class="col-sm" (dblclick)="editBook(book)">
                     Название книги: {{book.name}}<br />
                     Авторы: {{book.authors.join(', ')}} <br />
                     <div *ngIf="isNumber(book.rating)">
