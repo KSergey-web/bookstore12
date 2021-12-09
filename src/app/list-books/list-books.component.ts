@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BookComponent } from '../book/book.component';
 import { Book } from '../interfaces/book.interface';
 import { BookService } from '../services/book.service';
 import { bookPropertiesEnum } from './book.enum';
@@ -11,7 +13,10 @@ import { bookPropertiesEnum } from './book.enum';
 export class ListBooksComponent implements OnInit {
 
 
-  constructor(private bookService: BookService) {
+  constructor(
+    private bookService: BookService,
+    private modalService: NgbModal,
+    ) {
   }
 
   groupingBooks!: [string, [Book]][];
@@ -101,6 +106,11 @@ export class ListBooksComponent implements OnInit {
         this.updateBooks(bookPropertiesEnum.authors);
         break;
     }
+  }
+
+  editBook(book: Book): void {
+    const modalRef = this.modalService.open(BookComponent);
+    (modalRef.componentInstance as BookComponent).initBook = book;
   }
 
 }

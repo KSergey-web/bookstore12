@@ -21,7 +21,7 @@ export class AppComponent {
   closeResult = '';
   books: Book[] = [];
 
-  open() {
+  openBookModal() {
     this.modalService.open(BookComponent).result.then((book) => {
       this.books.push(book);
     }, (reason) => {

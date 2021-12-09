@@ -1,7 +1,7 @@
 <div class="pl-3 p-3">
     <div *ngIf='goodBook'>
         <h1>Лучшая книга</h1>
-        <div class="book  row">
+        <div class="book  row" (dblclick)="editBook(goodBook)">
             <div class='col-sm'>
                 Название книги: {{goodBook.name}}<br />
                 Авторы: <span *ngFor="let author of goodBook.authors; let i = index">{{author}}<span
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="card">
+    <div class="card mt-3">
         <h2>Группировать</h2>
     
     <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="mode">
@@ -29,7 +29,7 @@
             <input ngbButton type="radio" value='rating' (click)="changeGroping('rating')"> По рейтингу
         </label>
         <label ngbButtonLabel class="btn-primary mr-1">
-            <input ngbButton type="radio" value='authors' (click)="changeGroping('authors')"> По автору
+            <input ngbButton type="radio" value='authors' (click)="changeGroping('authors')"> По авторам
         </label>
     </div>
 </div>
@@ -50,7 +50,7 @@
             <h1 >Авторы: {{groupBook[0]}} </h1>
         </div>
         <ul>
-            <li *ngFor="let book of groupBook[1]" class="book row mt-4">
+            <li *ngFor="let book of groupBook[1]" class="book row mt-4" (dblclick)="editBook(book)">
                 <div class="col-sm">
                     Название книги: {{book.name}}<br />
                     Авторы: <span *ngFor="let author of book.authors; let i = index">{{author}}<span

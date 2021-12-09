@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import validator from 'validator';
 import { AbstractControl, NgForm, ValidatorFn } from '@angular/forms';
+import { Book } from '../interfaces/book.interface';
 
 interface bookOptionalProperties {
   year?: number;
@@ -23,10 +24,18 @@ export class BookOptionalPropertiesComponent implements OnInit {
         return validator.isISBN(control.value ?? '')
           ? null : { wrongISBN: control.value };
       })
+      this.bookOptionalForm.controls.isbn.setValue(this.initBook.isbn ?? '');
+      this.bookOptionalForm.controls.year.setValue(this.initBook.year ?? 0);
     }, 0);
+    this.isRatingCollapsed = !this.initBook.rating;
+    this.isYearCollapsed = !this.initBook.year;
+    this.isISBNCollapsed = !this.initBook.isbn; 
+    this.selectedRating = this.initBook.rating ?? 0;
   }
 
   @ViewChild('book_opt_form_tepm') bookOptionalForm!: NgForm;
+
+  @Input() initBook!: Book;
 
   selectedRating = 0;
   hovered = 0;
@@ -37,19 +46,12 @@ export class BookOptionalPropertiesComponent implements OnInit {
   isISBNCollapsed = true;
   isYearCollapsed = true;
 
-
-  book: bookOptionalProperties = {
-    rating: 0,
-    isbn: '',
-    year: 0,
-  }
-
   isFormValid(): boolean {
     if (!this.isYearCollapsed) {
-      if (this.bookOptionalForm.controls.year.invalid) return false;
+      if (this.bookOptionalForm?.controls?.year?.invalid) return false;
     }
     if (!this.isISBNCollapsed) {
-      if (this.bookOptionalForm.controls.isbn.invalid) return false;
+      if (this.bookOptionalForm?.controls?.isbn?.invalid) return false;
 
     }
     return true;

@@ -36,4 +36,8 @@ export class BookService {
   get booksObservable(): Observable<Book[]> {
     return this._bookObs;
   }
+
+  async updateBook(book: Book): Promise<void>{
+    return await this.firestore.collection(this.nameCollection).doc(book.id!).set(book);
+  }
 }

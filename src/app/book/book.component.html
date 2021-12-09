@@ -1,9 +1,11 @@
 <div class="container pt-2">
+  <h1 *ngIf='!initBook.id'>Добавление новой книги</h1>
+  <h1 *ngIf='initBook.id'>Редактирование книги</h1>
   <form #bookForm="ngForm" novalidate>
     <div class="form-group">
       Название книги
       <div class="col-md-8">
-        <input class="form-control" name="bookName" placeholder="Название" maxlength="100" ngModel required />
+        <input class="form-control" [value]='initBook.name' name="bookName" placeholder="Название" maxlength="100" ngModel required />
       </div>
     </div>
     <div class="form-group">
@@ -28,19 +30,17 @@
       <div class="card">
         <div class="card-body">
           <div class="form-group ">
-            
               <label class="mb-1">Автор:</label>
               <div class="row">
               <input class="form-control col-sm" [(ngModel)]="author" placeholder="Автор" [ngModelOptions]="{standalone: true}"
                 required />
                 <button class="ml-1 btn btn-secondary col-2sm" (click)="addAuthor()">Добавить</button>
             </div>
-            
           </div>
         </div>
       </div>
     </div>
-    <app-book-optional-properties #book_opt_comp_tepm></app-book-optional-properties>
+    <app-book-optional-properties #book_opt_comp_tepm [initBook]='initBook'></app-book-optional-properties>
     <div class="form-group">
       <div class="col text-center">
         <button [disabled]="bookForm.invalid || !authors_temp.hidden || !book_opt_comp_tepm.isFormValid()"
