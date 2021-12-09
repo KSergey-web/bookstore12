@@ -7,21 +7,20 @@ import { BookOptionalPropertiesComponent } from '../book-optional-properties/boo
 import { BookService } from '../services/book.service';
 import { from, of } from 'rxjs';
 
-
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
-  styleUrls: ['./book.component.scss']
+  styleUrls: ['./book.component.scss'],
 })
 export class BookComponent implements OnInit {
-
   @ViewChild(BookOptionalPropertiesComponent, { static: false })
-  private bookOptionalPropertiesComponent: BookOptionalPropertiesComponent | undefined;
+  private bookOptionalPropertiesComponent:
+    | BookOptionalPropertiesComponent
+    | undefined;
 
   @ViewChild('bookForm') bookForm!: NgForm;
 
   author?: string;
-
 
   @Input() authors: Array<string> = [];
 
@@ -32,30 +31,29 @@ export class BookComponent implements OnInit {
 
   isAuthorCollapsed = true;
 
-
   constructor(
     private activeModal: NgbActiveModal,
     private bookService: BookService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.initBook.id) {
       this.authors = this.initBook.authors;
     }
     setTimeout(() => {
-      this.bookForm.controls.bookName.setValue(this.initBook.name)
+      this.bookForm.controls.bookName.setValue(this.initBook.name);
     }, 0);
   }
 
-
   getFinishedBook(bookForm: NgForm): Book {
     this.bookOptionalPropertiesComponent?.getBookOptionalProperties();
-    const bookName = this.clearSpaces((bookForm.controls.bookName.value as string));
+    const bookName = this.clearSpaces(
+      bookForm.controls.bookName.value as string
+    );
     const book: Book = {
       name: bookName,
       authors: this.authors,
-      ...this.bookOptionalPropertiesComponent?.getBookOptionalProperties()
+      ...this.bookOptionalPropertiesComponent?.getBookOptionalProperties(),
     };
     if (this.initBook.id) book.id = this.initBook.id;
     return book;
@@ -63,14 +61,11 @@ export class BookComponent implements OnInit {
 
   async saveBook(bookForm: NgForm): Promise<void> {
     const book = this.getFinishedBook(bookForm);
-    try { 
-      if (this.initBook.id)
-        await this.bookService.updateBook(book);
-      else
-        await this.bookService.createBook(book);
+    try {
+      if (this.initBook.id) await this.bookService.updateBook(book);
+      else await this.bookService.createBook(book);
       this.activeModal.close('Success');
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
       alert('Не удалось сохранить книгу');
     }
@@ -88,7 +83,7 @@ export class BookComponent implements OnInit {
   }
 
   addAuthor(): void {
-    let author = this.clearSpaces(this.author ?? '')
+    let author = this.clearSpaces(this.author ?? '');
     if (!author) return;
     this.authors.push(author);
   }

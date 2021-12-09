@@ -8,52 +8,57 @@ import { bookPropertiesEnum } from './book.enum';
 @Component({
   selector: 'app-list-books',
   templateUrl: './list-books.component.html',
-  styleUrls: ['./list-books.component.scss']
+  styleUrls: ['./list-books.component.scss'],
 })
 export class ListBooksComponent implements OnInit {
-
-
   constructor(
     private bookService: BookService,
-    private modalService: NgbModal,
-    ) {
-  }
+    private modalService: NgbModal
+  ) {}
 
-  groupingBooks!: [string, [Book]][];
+  groupedBooks!: [string, [Book]][];
   groupMode: string = 'year';
   books: Book[] = [];
 
   ngOnInit(): void {
-    this.bookService.booksObservable.subscribe(books => {
+    this.bookService.booksObservable.subscribe((books) => {
       this.books = books;
       this.updateGoodBook(books);
       this.updateBooks(this.groupMode);
-    })
+    });
   }
 
-  
-  fnForGroupingByAuthors(book: Book) {
-    return book.authors.sort((a1: string, a2: string) => a1.localeCompare(a2))
+  fnForGroupingByAuthors(book: Book): string[] {
+    return book.authors.sort((author1: string, author2: string) =>
+      author1.localeCompare(author2)
+    );
   }
 
-  updateBooks(groupMode: string = 'year') {
-    if (groupMode === bookPropertiesEnum.authors) 
-      this.groupingBooks = Object.entries(this.groupBy(this.books, this.fnForGroupingByAuthors));
-    else 
-      this.groupingBooks = Object.entries(this.groupBy(this.books, groupMode));
-    this.groupingBooks.sort(([g1], [g2]) => !isNaN( +g2 ) ? (+g2 - +g1) : g1.localeCompare(g2));
-    this.groupingBooks.forEach(group => {
-      group[1].sort(({ name: str1 }, { name: str2 }) => str1.localeCompare(str2))
-    })
+  updateBooks(groupMode: string = 'year'): void {
+    if (groupMode === bookPropertiesEnum.authors)
+      this.groupedBooks = Object.entries(
+        this.groupBy(this.books, this.fnForGroupingByAuthors)
+      );
+    else
+      this.groupedBooks = Object.entries(this.groupBy(this.books, groupMode));
+    this.groupedBooks.sort(([group1], [group2]) =>
+      !isNaN(+group2) ? +group2 - +group1 : group1.localeCompare(group2)
+    );
+    this.groupedBooks.forEach(([, books]) => {
+      books.sort(({ name: n1 }, { name: n2 }) => n1.localeCompare(n2));
+    });
   }
 
   goodBook?: Book | null;
 
-  updateGoodBook(books: Book[]) {
+  updateGoodBook(books: Book[]): void {
     this.goodBook = null;
     const today = new Date().getFullYear();
-    books = books.filter(({ year }) => year ? ((today - year) >= 3) : false);
-    books = books.filter(({ rating }) => typeof rating === 'number' ? true : false);
+    debugger;
+    books = books.filter(({ year }) => (year ? today - year >= 3 : false));
+    books = books.filter(({ rating }) =>
+      typeof rating === 'number' ? true : false
+    );
     if (books.length === 0) return;
     books.sort(({ rating: r1 }, { rating: r2 }) => r2! - r1!);
     const highestRating = books[0].rating!;
@@ -62,11 +67,11 @@ export class ListBooksComponent implements OnInit {
       this.goodBook = books[0];
       return;
     }
-    const randomNumber: number = Math.floor(Math.random() * (books.length));
+    const randomNumber: number = Math.floor(Math.random() * books.length);
     this.goodBook = books[randomNumber];
   }
 
-  groupBy(arr: any, fn: any) {
+  groupBy(arr: any, fn: any): {[s:string]: [any] } {
     return arr
       .map(typeof fn === 'function' ? fn : (val: any) => val[fn])
       .reduce((acc: any, val: any, i: any) => {
@@ -75,16 +80,10 @@ export class ListBooksComponent implements OnInit {
       }, {});
   }
 
-  isLastAuthor(index: number, authors: Array<string>): boolean {
-    if (authors.length - 1 === index) return true;
-    return false;
-  }
-
   async deleteBook(book: Book): Promise<void> {
     try {
       this.bookService.deleteBook(book);
-    }
-    catch (err) {
+    } catch (err) {
       alert('Не удалось удалить книгу');
       console.error(err);
     }
@@ -94,7 +93,7 @@ export class ListBooksComponent implements OnInit {
 
   changeGroping(newMode: string): void {
     if (newMode == this.groupMode) return;
-    this.groupMode = newMode
+    this.groupMode = newMode;
     switch (this.groupMode) {
       case bookPropertiesEnum.year:
         this.updateBooks(bookPropertiesEnum.year);
@@ -113,4 +112,7 @@ export class ListBooksComponent implements OnInit {
     (modalRef.componentInstance as BookComponent).initBook = book;
   }
 
+  isNumber(number: any): boolean {
+    return typeof number === 'number';
+  }
 }

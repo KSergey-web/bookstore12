@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import validator from 'validator';
 import { AbstractControl, NgForm, ValidatorFn } from '@angular/forms';
 import { Book } from '../interfaces/book.interface';
@@ -12,24 +21,26 @@ interface bookOptionalProperties {
 @Component({
   selector: 'app-book-optional-properties',
   templateUrl: './book-optional-properties.component.html',
-  styleUrls: ['./book-optional-properties.component.scss']
+  styleUrls: ['./book-optional-properties.component.scss'],
 })
 export class BookOptionalPropertiesComponent implements OnInit {
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     setTimeout(() => {
-      this.bookOptionalForm.controls.isbn.setValidators((control: AbstractControl): { [key: string]: any } | null => {
-        return validator.isISBN(control.value ?? '')
-          ? null : { wrongISBN: control.value };
-      })
+      this.bookOptionalForm.controls.isbn.setValidators(
+        (control: AbstractControl): { [key: string]: any } | null => {
+          return validator.isISBN(control.value ?? '')
+            ? null
+            : { wrongISBN: control.value };
+        }
+      );
       this.bookOptionalForm.controls.isbn.setValue(this.initBook.isbn ?? '');
       this.bookOptionalForm.controls.year.setValue(this.initBook.year ?? 0);
     }, 0);
     this.isRatingCollapsed = !this.initBook.rating;
     this.isYearCollapsed = !this.initBook.year;
-    this.isISBNCollapsed = !this.initBook.isbn; 
+    this.isISBNCollapsed = !this.initBook.isbn;
     this.selectedRating = this.initBook.rating ?? 0;
   }
 
@@ -41,7 +52,6 @@ export class BookOptionalPropertiesComponent implements OnInit {
   hovered = 0;
   currentYear: number = new Date().getFullYear();
 
-
   isRatingCollapsed = true;
   isISBNCollapsed = true;
   isYearCollapsed = true;
@@ -52,7 +62,6 @@ export class BookOptionalPropertiesComponent implements OnInit {
     }
     if (!this.isISBNCollapsed) {
       if (this.bookOptionalForm?.controls?.isbn?.invalid) return false;
-
     }
     return true;
   }

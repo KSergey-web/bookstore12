@@ -5,28 +5,29 @@ import { Book } from './interfaces/book.interface';
 import { books } from './books';
 import { BookService } from './services/book.service';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   constructor(
     private modalService: NgbModal,
-    private bookService: BookService,
-    ) {
-  }
+    private bookService: BookService
+  ) {}
 
   closeResult = '';
   books: Book[] = [];
 
   openBookModal() {
-    this.modalService.open(BookComponent).result.then((book) => {
-      this.books.push(book);
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.modalService.open(BookComponent).result.then(
+      (book) => {
+        this.books.push(book);
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
   }
 
   private getDismissReason(reason: any): string {

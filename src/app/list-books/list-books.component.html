@@ -4,10 +4,9 @@
         <div class="book  row" (dblclick)="editBook(goodBook)">
             <div class='col-sm'>
                 Название книги: {{goodBook.name}}<br />
-                Авторы: <span *ngFor="let author of goodBook.authors; let i = index">{{author}}<span
-                        *ngIf='!isLastAuthor(i, goodBook.authors)'>, </span> </span> <br />
-                <span *ngIf='goodBook.rating'> Рейтинг: {{goodBook.rating}} <br /> </span>
-                <div *ngIf="goodBook.rating">
+                Авторы: {{goodBook.authors.join(', ')}} <br />
+                <div *ngIf="isNumber(goodBook.rating)">
+                <span > Рейтинг: {{goodBook.rating}} <br /> </span>
                     <ngb-rating [rate]="$any(goodBook.rating)" [readonly]="true"></ngb-rating>
                 </div>
                 <span *ngIf='goodBook.year'> Год публикации: {{goodBook.year}} <br /> </span>
@@ -20,7 +19,6 @@
     </div>
     <div class="card mt-3">
         <h2>Группировать</h2>
-    
     <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="mode">
         <label ngbButtonLabel class="btn-primary mr-1">
             <input ngbButton type="radio" value='year' (click)="changeGroping('year')"> По дате
@@ -33,30 +31,29 @@
         </label>
     </div>
 </div>
-    <div *ngFor="let groupBook of groupingBooks" class="mt-5">
+    <div *ngFor="let entryGroupBooks of groupedBooks" class="mt-5">
         <div *ngIf="groupMode === 'year'">
-            <h1 *ngIf="groupBook[0] !== 'undefined';else noyear_temp">Год публикации: {{groupBook[0]}} </h1>
+            <h1 *ngIf="entryGroupBooks[0] !== 'undefined';else noyear_temp">Год публикации: {{entryGroupBooks[0]}} </h1>
             <ng-template #noyear_temp>
                 <h1>Без даты публикации</h1>
             </ng-template>
         </div>
         <div *ngIf="groupMode === 'rating'">
-            <h1 *ngIf="groupBook[0] !== 'undefined';else norating_temp"> Оценка: {{groupBook[0]}} </h1>
+            <h1 *ngIf="entryGroupBooks[0] !== 'undefined';else norating_temp"> Оценка: {{entryGroupBooks[0]}} </h1>
             <ng-template #norating_temp>
                 <h1>Без рейтинга</h1>
             </ng-template>
         </div>
         <div *ngIf="groupMode === 'authors'">
-            <h1 >Авторы: {{groupBook[0]}} </h1>
+            <h1 >Авторы: {{entryGroupBooks[0].split(',').join(', ')}} </h1>
         </div>
         <ul>
-            <li *ngFor="let book of groupBook[1]" class="book row mt-4" (dblclick)="editBook(book)">
+            <li *ngFor="let book of entryGroupBooks[1]" class="book row mt-4" (dblclick)="editBook(book)">
                 <div class="col-sm">
                     Название книги: {{book.name}}<br />
-                    Авторы: <span *ngFor="let author of book.authors; let i = index">{{author}}<span
-                            *ngIf='!isLastAuthor(i, book.authors)'>, </span> </span> <br />
-                    <span *ngIf='book.rating'> Рейтинг: {{book.rating}} <br /> </span>
-                    <div *ngIf="book.rating">
+                    Авторы: {{book.authors.join(', ')}} <br />
+                    <div *ngIf="isNumber(book.rating)">
+                    <span> Рейтинг: {{book.rating}} <br /> </span>
                         <ngb-rating [rate]="$any(book.rating)" [readonly]="true"></ngb-rating>
                     </div>
                     <span *ngIf='book.year'> Год публикации: {{book.year}} <br /> </span>
