@@ -13,15 +13,9 @@
       Авторы:
       <ul class="pl-3 pr-3">
         <li *ngFor="let author of authors; let i = index" class="mt-2">
-          <div *ngIf="i !== editingAuthorInd" (dblclick)='editAuthor(author, i)' class="row author">
+          <div class="row author">
             <div class="col-sm">{{author}}</div>
             <button class="ml-1 btn btn-secondary col-2sm" (click)="deleteAuthor(i)">Удалить</button>
-          </div>
-          <div *ngIf="i === editingAuthorInd">
-            <input class="form-control col-sm" [(ngModel)]="editingAuthor" maxlength="30" placeholder="Автор"
-              [ngModelOptions]="{standalone: true}" />
-            <button class="ml-1 btn btn-secondary col-2sm" (click)="saveAuthor(i)">Сохранить</button>
-            <button class="ml-1 btn btn-secondary col-2sm" (click)="dismissEditedAuthor()">Отмена</button>
           </div>
         </li>
       </ul>
@@ -29,31 +23,13 @@
         Укажите хотя бы одного автора
       </div>
     </div>
-    <p>
-      <button type="button" class="btn btn-outline-primary" (click)="collapse_author.toggle()"
-        [attr.aria-expanded]="!isAuthorCollapsed" aria-controls="collapseExample">
-        Добавить автора
-      </button>
-    </p>
-    <div #collapse_author="ngbCollapse" [(ngbCollapse)]="isAuthorCollapsed">
-      <div class="card">
-        <div class="card-body">
-          <div class="form-group ">
-            <label class="">Автор:</label>
-            <div class="row">
-              <input class="form-control col-sm" [(ngModel)]="author" maxlength="40" placeholder="Автор"
-                [ngModelOptions]="{standalone: true}" pattern="[^,]+" required />
-              <button class="ml-1 btn btn-secondary col-2sm" (click)="addAuthor()">Добавить</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <app-book-optional-properties #book_opt_comp_tepm [initBook]='initBook'></app-book-optional-properties>
+    <app-author (newAuthor)="addAuthor($event)"></app-author>
+    <app-book-optional-properties class='mt-2' #book_opt_comp_tepm [initBook]='initBook'></app-book-optional-properties>
     <div class="form-group">
-      <div class="col text-center">
+      <div class="col text-center mt-3">
         <button [disabled]="bookForm.invalid || !authors_temp.hidden || !book_opt_comp_tepm.isFormValid()"
           class="btn btn-primary" type="submit" (click)="saveBook(bookForm)">Сохранить книгу</button>
+        <button class="btn btn-secondary ml-2" type="button" (click)="dismiss()">Отмена</button>
       </div>
     </div>
   </form>

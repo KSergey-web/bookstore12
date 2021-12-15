@@ -1,0 +1,31 @@
+<div>
+    <button type="button" class="btn btn-outline-primary" (click)="collapse_author.toggle()"
+        [attr.aria-expanded]="!isAuthorCollapsed" aria-controls="collapseExample">
+        
+        <span *ngIf='isAuthorCollapsed'>Добавить автора</span>
+        <span *ngIf='!isAuthorCollapsed'>Не добавлять автора</span>
+    </button>
+</div>
+<div #collapse_author="ngbCollapse" [(ngbCollapse)]="isAuthorCollapsed">
+    <div class="card">
+        <div class="card-body">
+            <form #authorForm="ngForm" novalidate>
+                <p>Автор</p>
+                <div class="form-group ">
+                    <label class="">Фамилия:</label>
+                    <input class="form-control" name='surname' ngModel maxlength="20" placeholder="Фамилия"
+                        pattern="^[a-zA-Zа-яА-Я]+$" required />
+                </div>
+                <div class="form-group ">
+                    <label class="">Имя:</label>
+                    <input class="form-control" name='name' ngModel maxlength="20" placeholder="Имя"
+                        pattern="^[a-zA-Zа-яА-Я]+$" required />
+                </div>
+                <div class="col text-center">
+                    <button [disabled]="authorForm.invalid" class="ml-1 btn btn-secondary" type="submit"
+                        (click)="addAuthor(authorForm)">Добавить автора</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

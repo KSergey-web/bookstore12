@@ -1,11 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  Firestore,
-  collectionData,
-  collection,
-  CollectionReference,
-} from '@angular/fire/firestore';
-import { DocumentData } from 'rxfire/firestore/interfaces';
 import { Observable } from 'rxjs';
 import {
   AngularFirestore,

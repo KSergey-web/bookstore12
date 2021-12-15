@@ -1,11 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Book } from '../interfaces/book.interface';
-import validator from 'validator';
 import { NgForm } from '@angular/forms';
 import { BookOptionalPropertiesComponent } from '../book-optional-properties/book-optional-properties.component';
 import { BookService } from '../services/book.service';
-import { from, of } from 'rxjs';
 
 @Component({
   selector: 'app-book',
@@ -20,20 +18,12 @@ export class BookComponent implements OnInit {
 
   @ViewChild('bookForm') bookForm!: NgForm;
 
-  author?: string;
-
-  editingAuthor: string = '';
-
-  editingAuthorInd: number = -1;
-
   @Input() authors: Array<string> = [];
 
   @Input() initBook: Book = {
     name: '',
     authors: [],
   };
-
-  isAuthorCollapsed = true;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -49,35 +39,15 @@ export class BookComponent implements OnInit {
     }, 0);
   }
 
-  dismissEditedAuthor() {
-    this.editingAuthorInd = -1;
-  }
-
-  editAuthor(author: string, ind: number): void {
-    this.editingAuthor = author;
-    this.editingAuthorInd = ind;
-  }
-
   deleteAuthor(ind: number): void {
     this.authors.splice(ind, 1);
   }
 
-  saveAuthor(ind: number): void {
-    let author = this.editingAuthor;
-    author = this.clearSpaces(author);
-    this.editingAuthorInd = -1;
-    if (!author) {
-      this.deleteAuthor(ind);
-      return;
-    }
-    this.authors[ind] = author;
-  }
-
   getFinishedBook(bookForm: NgForm): Book {
     this.bookOptionalPropertiesComponent?.getBookOptionalProperties();
-    const bookName = this.clearSpaces(
-      bookForm.controls.bookName.value as string
-    );
+    const bookName = (bookForm.controls.bookName.value as string)
+      .trim()
+      .replace(/ +/g, ' ');
     const book: Book = {
       name: bookName,
       authors: this.authors,
@@ -99,17 +69,11 @@ export class BookComponent implements OnInit {
     }
   }
 
-  addAuthor(): void {
-    let author = this.clearSpaces(this.author ?? '');
-    if (!author) return;
-    this.authors.push(author);
-    this.author = '';
-    this.isAuthorCollapsed = true;
+  addAuthor(author: string): void {
+    if (!this.authors.includes(author)) this.authors.push(author);
   }
 
-  clearSpaces(str: string): string {
-    str = str.trim();
-    str = str.replace(/ +/g, ' ');
-    return str;
+  dismiss(): void {
+    this.activeModal.dismiss();
   }
 }

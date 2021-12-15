@@ -1,22 +1,8 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import validator from 'validator';
-import { AbstractControl, NgForm, ValidatorFn } from '@angular/forms';
+import { AbstractControl, NgForm } from '@angular/forms';
 import { Book } from '../interfaces/book.interface';
-
-interface bookOptionalProperties {
-  year?: number;
-  rating?: number;
-  isbn?: string;
-}
+import { BookOptionalProperties } from '../interfaces/book-optional-properties.interface';
 
 @Component({
   selector: 'app-book-optional-properties',
@@ -25,24 +11,6 @@ interface bookOptionalProperties {
 })
 export class BookOptionalPropertiesComponent implements OnInit {
   constructor() {}
-
-  ngOnInit() {
-    setTimeout(() => {
-      this.bookOptionalForm.controls.isbn.setValidators(
-        (control: AbstractControl): { [key: string]: any } | null => {
-          return validator.isISBN(control.value ?? '')
-            ? null
-            : { wrongISBN: control.value };
-        }
-      );
-      this.bookOptionalForm.controls.isbn.setValue(this.initBook.isbn ?? '');
-      this.bookOptionalForm.controls.year.setValue(this.initBook.year ?? 0);
-    }, 0);
-    this.isRatingCollapsed = !this.initBook.rating;
-    this.isYearCollapsed = !this.initBook.year;
-    this.isISBNCollapsed = !this.initBook.isbn;
-    this.selectedRating = this.initBook.rating ?? 0;
-  }
 
   @ViewChild('book_opt_form_tepm') bookOptionalForm!: NgForm;
 
@@ -56,6 +24,38 @@ export class BookOptionalPropertiesComponent implements OnInit {
   isISBNCollapsed = true;
   isYearCollapsed = true;
 
+  ngOnInit() {
+    setTimeout(() => {
+      this.setISBNValidation();
+      this.setInitBook();
+    }, 0);
+    this.setCollases();
+  }
+
+  private setISBNValidation(): void {
+    this.bookOptionalForm.controls.isbn.setValidators(
+      (control: AbstractControl): { [key: string]: any } | null => {
+        return validator.isISBN(control.value ?? '')
+          ? null
+          : { wrongISBN: control.value };
+      }
+    );
+  }
+
+  private setInitBook(): void {
+    this.bookOptionalForm.controls.isbn.setValue(this.initBook.isbn ?? '');
+    this.bookOptionalForm.controls.year.setValue(this.initBook.year ?? 0);
+    this.selectedRating = this.initBook.rating ?? 0;
+  }
+
+  private setCollases(): void {
+    this.isRatingCollapsed = !(
+      this.initBook.rating || this.initBook.rating === 0
+    );
+    this.isYearCollapsed = !this.initBook.year;
+    this.isISBNCollapsed = !this.initBook.isbn;
+  }
+
   isFormValid(): boolean {
     if (!this.isYearCollapsed) {
       if (this.bookOptionalForm?.controls?.year?.invalid) return false;
@@ -66,8 +66,8 @@ export class BookOptionalPropertiesComponent implements OnInit {
     return true;
   }
 
-  getBookOptionalProperties(): bookOptionalProperties {
-    let res: bookOptionalProperties = {};
+  getBookOptionalProperties(): BookOptionalProperties {
+    let res: BookOptionalProperties = {};
     if (!this.isYearCollapsed) {
       res.year = this.bookOptionalForm.controls.year.value;
     }

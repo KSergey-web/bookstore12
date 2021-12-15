@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BookComponent } from '../book/book.component';
 import { Book } from '../interfaces/book.interface';
@@ -19,7 +19,9 @@ export class ListBooksComponent implements OnInit {
   groupedBooks!: [string, [Book]][];
   groupMode: string = 'year';
   books: Book[] = [];
-  
+
+  goodBook?: Book | null;
+
   private today = new Date().getFullYear();
 
   ngOnInit(): void {
@@ -30,19 +32,20 @@ export class ListBooksComponent implements OnInit {
     });
   }
 
-  fnForGroupingByAuthors(book: Book): string[] {
+  private fnForGroupingByAuthors(book: Book): string[] {
     return book.authors.sort((author1: string, author2: string) =>
       author1.localeCompare(author2)
     );
   }
 
   updateBooks(groupMode: string = 'year'): void {
-    if (groupMode === bookPropertiesEnum.authors)
+    if (groupMode === bookPropertiesEnum.authors) {
       this.groupedBooks = Object.entries(
         this.groupBy(this.books, this.fnForGroupingByAuthors)
       );
-    else
+    } else {
       this.groupedBooks = Object.entries(this.groupBy(this.books, groupMode));
+    }
     this.groupedBooks.sort(([group1], [group2]) =>
       !isNaN(+group2) ? +group2 - +group1 : group1.localeCompare(group2)
     );
@@ -51,13 +54,11 @@ export class ListBooksComponent implements OnInit {
     });
   }
 
-  goodBook?: Book | null;
-
   updateGoodBook(books: Book[]): void {
     this.goodBook = null;
     books = books.filter(({ year, rating }) => {
-      const old3year: boolean = (year ? this.today - year >= 3 : false)
-      const hasRating: boolean = (typeof rating === 'number' ? true : false)
+      const old3year: boolean = year ? this.today - year >= 3 : false;
+      const hasRating: boolean = typeof rating === 'number' ? true : false;
       return old3year && hasRating;
     });
     if (books.length === 0) return;
@@ -72,7 +73,7 @@ export class ListBooksComponent implements OnInit {
     this.goodBook = books[randomNumber];
   }
 
-  groupBy(arr: any, fn: any): { [s: string]: [any] } {
+  private groupBy(arr: any, fn: any): { [s: string]: [any] } {
     return arr
       .map(typeof fn === 'function' ? fn : (val: any) => val[fn])
       .reduce((acc: any, val: any, i: any) => {
@@ -90,8 +91,6 @@ export class ListBooksComponent implements OnInit {
     }
   }
 
-  mode: string = 'year';
-
   changeGrouping(newMode: string): void {
     if (newMode == this.groupMode) return;
     this.groupMode = newMode;
@@ -108,6 +107,10 @@ export class ListBooksComponent implements OnInit {
     }
   }
 
+  openBookModal() {
+    this.modalService.open(BookComponent);
+  }
+
   editBook(book: Book): void {
     const modalRef = this.modalService.open(BookComponent);
     (modalRef.componentInstance as BookComponent).initBook = book;
@@ -116,4 +119,6 @@ export class ListBooksComponent implements OnInit {
   isNumber(number: any): boolean {
     return typeof number === 'number';
   }
+
+  modeForNgModel: string = 'year';
 }

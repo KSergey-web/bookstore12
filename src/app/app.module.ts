@@ -10,6 +10,7 @@ import { ListBooksComponent } from './list-books/list-books.component';
 import { environment } from 'src/environments/environment';
 import { BookService } from './services/book.service';
 import { AngularFireModule } from '@angular/fire/compat';
+import { AuthorComponent } from './author/author.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { AngularFireModule } from '@angular/fire/compat';
     BookComponent,
     BookOptionalPropertiesComponent,
     ListBooksComponent,
+    AuthorComponent,
   ],
   imports: [
     BrowserModule,

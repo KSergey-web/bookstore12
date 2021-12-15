@@ -76,7 +76,7 @@ Data output structure sample:
         Rating: 9
         ISBN: 978-0132350884
 
-        George and the Big BangККККККККККККККККККККККККоооооооооооооооооооосяк
+        George and the Big Bang
         Author: Hawking, Stephen; Hawking, Lucy
         Publication year: 2013
         ISBN: 978-1442440067
